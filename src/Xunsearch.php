@@ -141,6 +141,20 @@ class Xunsearch
     /**
      *
      * @author zxf
+     * @date    2020年9月3日
+     * @param mixed $field
+     * @param bool $asc
+     * @param bool $relevance
+     * @return \XSSearch
+     */
+    public function setSort($field, bool $asc = false, bool $relevance = false)
+    {
+        return $this->getSearch()->setSort($field, $asc, $relevance);
+    }
+
+    /**
+     *
+     * @author zxf
      * @date   2020年9月3日
      * @param string $query
      * @return array
@@ -161,6 +175,19 @@ class Xunsearch
     public function setFacets($field, bool $exact = false)
     {
         return $this->getSearch()->setFacets($field, $exact);
+    }
+
+    /**
+     *
+     * @author zxf
+     * @date    2020年9月3日
+     * @param  string $value
+     * @param  bool $strtr
+     * @return string
+     */
+    public function highlight(string $value, bool $strtr = false)
+    {
+        return $this->getSearch()->highlight($value, $strtr);
     }
 
     /**
@@ -203,6 +230,30 @@ class Xunsearch
             return $this->getIndex();
         } catch (\Exception $e) {
             throw new XunsearchException('索引添加失败！');
+        }
+    }
+
+    /**
+     *
+     * @author zxf
+     * @date    2020年9月3日
+     * @param array $item
+     * @throws XunsearchException
+     * @return boolean
+     */
+    public function updateIndex(array $item)
+    {
+        try {
+            $doc = new \XSDocument;
+            $doc->setFields($item);
+            $this->getIndex()->update($doc);
+
+            if ($this->flushIndex) {
+                $this->getIndex()->flushIndex();
+            }
+            return true;
+        } catch (\Exception $e) {
+            throw new XunsearchException('索引修改失败！');
         }
     }
 
@@ -394,6 +445,26 @@ class Xunsearch
     public function getDatabase()
     {
         return $this->database;
+    }
+
+    /**
+     *
+     * @author zxf
+     * @date    2020年9月3日
+     * @param  mixed  $method
+     * @param  mixed $parameters
+     * @throws XunsearchException
+     * @return mixed
+     */
+    public function __call($method, $parameters)
+    {
+        if (method_exists($this->getSearch(), $method)) {
+            return $this->getSearch()->{$method}(...$parameters);
+        } elseif (method_exists($this->getIndex(), $method)) {
+            return $this->getIndex()->{$method}(...$parameters);
+        } else {
+            throw new XunsearchException('方法｛' . $method . '｝不存在！');
+        }
     }
 
     /**
