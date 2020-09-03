@@ -1,0 +1,35 @@
+{
+    "name" : "seffeng/laravel-xunsearch",
+    "description" : "PHP laravel extension xunsearch",
+    "keywords" : [
+        "PHP",
+        "laravel",
+        "seffeng",
+        "xunsearch"
+    ],
+    "license" : "MIT",
+    "homepage" : "https://github.com/seffeng/laravel-xunsearch",
+    "authors" : [{
+            "name" : "seffeng",
+            "email" : "save.zxf@gmail.com",
+            "homepage" : "https://github.com/seffeng"
+        }
+    ],
+    "require" : {
+        "php" : ">=7.1.3",
+        "hightman/xunsearch" : "^1.0"
+    },
+    "autoload" : {
+        "psr-4" : {
+            "Seffeng\\LaravelXunsearch\\" : "src/"
+        }
+    },
+    "extra" : {
+        "laravel" : {
+            "providers" : [
+                "Seffeng\\LaravelXunsearch\\XunsearchServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability" : "stable"
+}
