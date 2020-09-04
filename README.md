@@ -64,10 +64,11 @@ class XunsearchTest extends TestCase
             $data = ['id' => 1, 'name' => '李白']; // 或二维数组 [['id' => 1, 'name' => '李白'], ['id' => 2, 'name' => '杜甫']]
             Xunsearch::addIndex($data);
             // 或非默认项目库
+            // 注意：使用 setDatabase($db) 后，再使用 Xunsearch::{$method} 也为新设置的$db
             Xunsearch::setDatabase('author')->addIndex($data);
             
             // 修改文档
-            $data = ['id' => 1, 'name' => '李太白'];
+            $data = ['id' => 1, 'name' => '李白，字太白'];
             Xunsearch::updateIndex($data);
             
             // 删除文档
@@ -98,7 +99,7 @@ class XunsearchTest extends TestCase
                                 [_data:XSDocument:private] => Array
                                     (
                                         [id] => 1
-                                        [name] => 李白
+                                        [name] => 李白，字太白
                                         [255] =>
                                     )
 
@@ -145,3 +146,15 @@ class XunsearchTest extends TestCase
 ### 备注
 
 1、测试脚本 tests/XunsearchTest.php 仅作为示例供参考。
+
+2、xunsearch [安装](https://hub.docker.com/r/seffeng/xunsearch)。
+
+```shell
+# docker 安装
+$ docker pull seffeng/xunsearch
+
+# 启动
+$ docker run -d seffeng/xunsearch
+```
+
+3、xunsearch [官方介绍](http://xunsearch.com/doc/php/guide/start.installation)。

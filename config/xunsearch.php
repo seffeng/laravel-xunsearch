@@ -21,9 +21,9 @@ return [
          */
         'default' => [
             /**
-             * 项目名称
+             * 项目名称，注意：值不能是驼峰类型[projectName]
              */
-            'project.name' => 'projectName',
+            'project.name' => 'project-name',
 
             /**
              * 默认字符集

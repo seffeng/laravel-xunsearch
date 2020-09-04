@@ -23,7 +23,7 @@ class XunsearchTest extends TestCase
             Xunsearch::setDatabase('author')->addIndex($data);
             
             // 修改文档
-            $data = ['id' => 1, 'name' => '李太白'];
+            $data = ['id' => 1, 'name' => '李白，字太白'];
             Xunsearch::updateIndex($data);
             
             // 删除文档
@@ -54,7 +54,7 @@ class XunsearchTest extends TestCase
                                 [_data:XSDocument:private] => Array
                                     (
                                         [id] => 1
-                                        [name] => 李白
+                                        [name] => 李白，字太白
                                         [255] =>
                                     )
 
