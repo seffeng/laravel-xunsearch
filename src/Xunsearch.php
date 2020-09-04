@@ -79,127 +79,23 @@ class Xunsearch
      */
     public function search(string $query, bool $saveHighlight = true)
     {
-        return $this->getSearch()
-                ->setLimit($this->getLimit(), $this->getOffset())
-                ->setFuzzy($this->getFuzzy())
-                ->search($query, $saveHighlight);
-    }
+        $startTime = microtime(true);
+        $search = $this->getSearch();
+        $search->setLimit($this->getLimit(), $this->getOffset())->setFuzzy($this->getFuzzy());
+        $items = $search->search($query, $saveHighlight);
+        $totalCount = $this->getSearch()->getLastCount();
+        $searchCost = microtime(true) - $startTime;
 
-    /**
-     *
-     * @author zxf
-     * @date   2020年9月3日
-     * @param int $limit
-     * @param string $type
-     * @return array
-     */
-    public function getHotQuery(int $limit = 6, string $type = 'total')
-    {
-        return $this->getSearch()->getHotQuery($limit, $type);
-    }
-
-    /**
-     *
-     * @author zxf
-     * @date   2020年9月3日
-     * @param string $query
-     * @param int $limit
-     * @return array
-     */
-    public function getRelatedQuery(string $query = null, int $limit = 6)
-    {
-        return $this->getSearch()->getRelatedQuery($query, $limit);
-    }
-
-    /**
-     *
-     * @author zxf
-     * @date   2020年9月3日
-     * @param string $query
-     * @param int $limit
-     * @return array
-     */
-    public function getExpandedQuery(string $query, int $limit = 10)
-    {
-        return $this->getSearch()->getExpandedQuery($query, $limit);
-    }
-
-    /**
-     *
-     * @author zxf
-     * @date   2020年9月3日
-     * @param array $fields
-     * @param bool $reverse
-     * @param bool $relevance
-     * @return \XSSearch
-     */
-    public function setMultiSort(array $fields, bool $reverse = false, bool $relevance = false)
-    {
-        return $this->getSearch()->setMultiSort($fields, $reverse, $relevance);
-    }
-
-    /**
-     *
-     * @author zxf
-     * @date    2020年9月3日
-     * @param mixed $field
-     * @param bool $asc
-     * @param bool $relevance
-     * @return \XSSearch
-     */
-    public function setSort($field, bool $asc = false, bool $relevance = false)
-    {
-        return $this->getSearch()->setSort($field, $asc, $relevance);
-    }
-
-    /**
-     *
-     * @author zxf
-     * @date   2020年9月3日
-     * @param string $query
-     * @return array
-     */
-    public function getCorrectedQuery(string $query = null)
-    {
-        return $this->getSearch()->getCorrectedQuery($query);
-    }
-
-    /**
-     *
-     * @author zxf
-     * @date   2020年9月3日
-     * @param mixed $field
-     * @param bool $exact
-     * @return \XSSearch
-     */
-    public function setFacets($field, bool $exact = false)
-    {
-        return $this->getSearch()->setFacets($field, $exact);
-    }
-
-    /**
-     *
-     * @author zxf
-     * @date    2020年9月3日
-     * @param  string $value
-     * @param  bool $strtr
-     * @return string
-     */
-    public function highlight(string $value, bool $strtr = false)
-    {
-        return $this->getSearch()->highlight($value, $strtr);
-    }
-
-    /**
-     *
-     * @author zxf
-     * @date   2020年9月3日
-     * @param string $field
-     * @return array|mixed
-     */
-    public function getFacets(string $field)
-    {
-        return $this->getSearch()->getFacets($field);
+        return [
+            'time' => $searchCost,
+            'data' => $items,
+            'page' => [
+                'totalCount' => $totalCount,
+                'pageCount' => $totalCount > $this->getLimit() ? ceil($totalCount / $this->getLimit()) : ($totalCount > 0 ? 1 : 0),
+                'currentPage' => $this->getPage(),
+                'perPage' => $this->getLimit(),
+            ],
+        ];
     }
 
     /**
@@ -221,7 +117,7 @@ class Xunsearch
                 }
             } else {
                 $doc = new \XSDocument();
-                $doc->setFields($item);
+                $doc->setFields($items);
                 $this->getIndex()->add($doc);
             }
             if ($this->flushIndex) {
@@ -293,47 +189,6 @@ class Xunsearch
         } catch (\Exception $e) {
             throw new XunsearchException('索引清空失败！');
         }
-    }
-
-    /**
-     *
-     * @author zxf
-     * @date   2020年9月3日
-     */
-    public function beginRebuild()
-    {
-        $this->getIndex()->beginRebuild();
-    }
-
-    /**
-     *
-     * @author zxf
-     * @date   2020年9月3日
-     */
-    public function endRebuild()
-    {
-        $this->getIndex()->endRebuild();
-    }
-
-    /**
-     *
-     * @author zxf
-     * @date   2020年9月3日
-     * @param int $size
-     */
-    public function openBuffer(int $size = 4)
-    {
-        $this->getIndex()->openBuffer($size);
-    }
-
-    /**
-     *
-     * @author zxf
-     * @date   2020年9月3日
-     */
-    public function closeBuffer()
-    {
-        $this->getIndex()->closeBuffer();
     }
 
     /**
@@ -420,6 +275,18 @@ class Xunsearch
     {
         $this->offset = ($page - 1) * $this->limit;
         return $this;
+    }
+
+    /**
+     *
+     * @author zxf
+     * @date   2020年9月4日
+     * @return number
+     */
+    public function getPage()
+    {
+        $page = ($this->getOffset() / $this->getLimit()) + 1;
+        return $page > 1 ? $page : 1;
     }
 
     /**

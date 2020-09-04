@@ -1,51 +1,7 @@
-## Laravel Xunsearch
+<?php  declare(strict_types=1);
 
-### 安装
+namespace Seffeng\LaravelXunsearch\Tests;
 
-```shell
-$ composer require seffeng/laravel-xunsearch
-```
-
-##### Laravel
-
-```shell
-# 1、生成配置文件
-$ php artisan vendor:publish --tag="xunsearch"
-
-# 2、修改配置文件 /config/xunsearch.php 或 /.env，建议通过修改 .env 实现配置，
-
-```
-
-##### Lumen
-
-```php
-# 1、将以下代码段添加到 /bootstrap/app.php 文件中的 Providers 部分
-$app->register(Seffeng\LaravelXunsearch\XunsearchServiceProvider::class);
-
-# 2、复制扩展包内 config/xunsearch.php 到项目 config 目录，修改项目字段， 在 .env 文件中添加配置
-
-```
-
-### 目录说明
-
-```
-├───config
-│       xunsearch.php
-├───src
-│   │   Xunsearch.php
-│   │   XunsearchServiceProvider.php
-|   ├───Exceptions
-|   |       XunsearchException.php
-│   └───Facades
-│           Xunsearch.php
-```
-
-### 示例
-
-```php
-/**
- * 参考 tests/XunsearchTest.php
- */
 use PHPUnit\Framework\TestCase;
 use Seffeng\LaravelXunsearch\Facades\Xunsearch;
 
@@ -133,15 +89,3 @@ class XunsearchTest extends TestCase
         }
     }
 }
-    
-```
-
-## 项目依赖
-
-| 依赖               | 仓库地址                               | 备注 |
-| :----------------- | :------------------------------------- | :--- |
-| hightman/xunsearch | https://github.com/hightman/xs-sdk-php | 无   |
-
-### 备注
-
-1、测试脚本 tests/XunsearchTest.php 仅作为示例供参考。
