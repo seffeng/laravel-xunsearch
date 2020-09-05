@@ -83,7 +83,7 @@ class Xunsearch
         $search = $this->getSearch();
         $search->setLimit($this->getLimit(), $this->getOffset())->setFuzzy($this->getFuzzy());
         $items = $search->search($query, $saveHighlight);
-        $totalCount = $this->getSearch()->getLastCount();
+        $totalCount = $search->count($query);
         $searchCost = microtime(true) - $startTime;
 
         return [
