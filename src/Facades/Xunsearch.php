@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Seffeng\LaravelXunsearch\Xunsearch getOffset()
  * @method static \Seffeng\LaravelXunsearch\Xunsearch addIndex(array $items)
  * @method static \Seffeng\LaravelXunsearch\Xunsearch delIndex(array $idItems)
- * @method static \Seffeng\LaravelXunsearch\Xunsearch clearIndex()
+ * @method static \Seffeng\LaravelXunsearch\Xunsearch cleanIndex()
  * @method static \Seffeng\LaravelXunsearch\Xunsearch beginRebuild()
  * @method static \Seffeng\LaravelXunsearch\Xunsearch endRebuild()
  * @method static \Seffeng\LaravelXunsearch\Xunsearch openBuffer(int $size = 4)
