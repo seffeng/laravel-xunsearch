@@ -243,8 +243,8 @@ class Xunsearch
      * @author zxf
      * @date   2020年12月17日
      * @param string $field
-     * @param string|integer $from
-     * @param string|integer $to
+     * @param integer $from
+     * @param integer $to
      * @return static
      */
     public function setRange(string $field, int $from = null, int $to = null)
@@ -252,6 +252,21 @@ class Xunsearch
         $this->rangeField = $field;
         $this->rangeFrom = $from;
         $this->rangeTo = $to;
+        return $this;
+    }
+
+    /**
+     *
+     * @author zxf
+     * @date   2020年12月17日
+     * @param string $field
+     * @param integer $from
+     * @param integer $to
+     * @return static
+     */
+    public function addRange(string $field, int $from = null, int $to = null)
+    {
+        $this->setRange($field, $from, $to);
         return $this;
     }
 

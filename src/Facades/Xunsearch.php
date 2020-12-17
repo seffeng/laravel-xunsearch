@@ -34,11 +34,11 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Seffeng\LaravelXunsearch\Xunsearch setFacets($field, bool $exact = false)
  * @method static \Seffeng\LaravelXunsearch\Xunsearch setSort($field, bool $asc = false, bool $relevance = false)
  * @method static \Seffeng\LaravelXunsearch\Xunsearch setRange(string $field, int $from = null, int $to = null)
+ * @method static \Seffeng\LaravelXunsearch\Xunsearch addRange(string $field, int $from = null, int $to = null)
  * @method static \Seffeng\LaravelXunsearch\Xunsearch setAutoSynonyms(bool $synonyms = true)
  * @method static \Seffeng\LaravelXunsearch\Xunsearch getLastCount()
  * @method static \Seffeng\LaravelXunsearch\Xunsearch count(string $query = null)
  * @method static \Seffeng\LaravelXunsearch\Xunsearch terms(string $query = null, bool $convert = true)
- * @method static \Seffeng\LaravelXunsearch\Xunsearch addRange(string $field, $from, $to)
  *
  * @see \Seffeng\LaravelXunsearch\Xunsearch
  */
