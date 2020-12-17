@@ -33,6 +33,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Seffeng\LaravelXunsearch\Xunsearch setMultiSort(array $fields, bool $reverse = false, bool $relevance = false)
  * @method static \Seffeng\LaravelXunsearch\Xunsearch setFacets($field, bool $exact = false)
  * @method static \Seffeng\LaravelXunsearch\Xunsearch setSort($field, bool $asc = false, bool $relevance = false)
+ * @method static \Seffeng\LaravelXunsearch\Xunsearch setRange(string $field, int $from = null, int $to = null)
  * @method static \Seffeng\LaravelXunsearch\Xunsearch setAutoSynonyms(bool $synonyms = true)
  * @method static \Seffeng\LaravelXunsearch\Xunsearch getLastCount()
  * @method static \Seffeng\LaravelXunsearch\Xunsearch count(string $query = null)

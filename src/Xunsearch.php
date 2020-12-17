@@ -58,6 +58,22 @@ class Xunsearch
 
     /**
      *
+     * @var string
+     */
+    private $rangeField;
+    /**
+     *
+     * @var integer
+     */
+    private $rangeFrom;
+    /**
+     *
+     * @var integer
+     */
+    private $rangeTo;
+
+    /**
+     *
      * @author zxf
      * @date   2020年9月3日
      */
@@ -80,10 +96,13 @@ class Xunsearch
     public function search(string $query, bool $saveHighlight = true)
     {
         $startTime = microtime(true);
-        $search = $this->getSearch();
+        $search = $this->getSearch()->setQuery($query);
+        if ($this->getRangeField() && ($this->getRangeFrom() || $this->getRangeTo())) {
+            $search->addRange($this->getRangeField(), $this->getRangeFrom(), $this->getRangeTo());
+        }
         $search->setLimit($this->getLimit(), $this->getOffset())->setFuzzy($this->getFuzzy());
-        $items = $search->search($query, $saveHighlight);
-        $totalCount = $search->count($query);
+        $items = $search->search(null, $saveHighlight);
+        $totalCount = $search->count();
         $searchCost = microtime(true) - $startTime;
 
         return [
@@ -202,6 +221,71 @@ class Xunsearch
     {
         $this->fuzzy = $fuzzy;
         return $this;
+    }
+
+    /**
+     *
+     * @author zxf
+     * @date   2020年12月17日
+     * @param string|array $field
+     * @param boolean $asc
+     * @param boolean $relevance
+     * @return \Seffeng\LaravelXunsearch\Xunsearch
+     */
+    public function setSort($field, bool $asc = false, bool $relevance = false)
+    {
+        $this->getSearch()->setSort($field, $asc, $relevance);
+        return $this;
+    }
+
+    /**
+     *
+     * @author zxf
+     * @date   2020年12月17日
+     * @param string $field
+     * @param string|integer $from
+     * @param string|integer $to
+     * @return static
+     */
+    public function setRange(string $field, int $from = null, int $to = null)
+    {
+        $this->rangeField = $field;
+        $this->rangeFrom = $from;
+        $this->rangeTo = $to;
+        return $this;
+    }
+
+    /**
+     *
+     * @author zxf
+     * @date   2020年12月17日
+     * @return string
+     */
+    public function getRangeField()
+    {
+        return $this->rangeField;
+    }
+
+    /**
+     *
+     * @author zxf
+     * @date   2020年12月17日
+     * @return number
+     */
+    public function getRangeFrom()
+    {
+        return $this->rangeFrom;
+    }
+
+    /**
+     *
+     * @author zxf
+     * @date   2020年12月17日
+     * @return number
+     */
+    public function getRangeTo()
+    {
+        return $this->rangeTo;
     }
 
     /**
