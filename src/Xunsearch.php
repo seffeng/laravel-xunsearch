@@ -82,6 +82,12 @@ class Xunsearch
 
     /**
      *
+     * @var array
+     */
+    private $sort;
+
+    /**
+     *
      * @author zxf
      * @date   2020年9月3日
      */
@@ -115,7 +121,13 @@ class Xunsearch
         }
 
         $totalCount = $search->count();
-        $items = $search->setLimit($this->getLimit(), $this->getOffset())->search(null, $saveHighlight);
+        $search->setLimit($this->getLimit(), $this->getOffset());
+
+        if ($this->getSort()) {
+            $search->setSort($this->getSort()['0'], $this->getSort()['1'], $this->getSort()['2']);
+        }
+
+        $items = $search->search(null, $saveHighlight);
         $searchCost = microtime(true) - $startTime;
 
         return [
@@ -247,8 +259,19 @@ class Xunsearch
      */
     public function setSort($field, bool $asc = false, bool $relevance = false)
     {
-        $this->getSearch()->setSort($field, $asc, $relevance);
+        $this->sort = [$field, $asc, $relevance];
         return $this;
+    }
+
+    /**
+     *
+     * @author zxf
+     * @date   2021年11月3日
+     * @return array
+     */
+    public function getSort()
+    {
+        return $this->sort;
     }
 
     /**
@@ -469,6 +492,17 @@ class Xunsearch
     public function getDatabase()
     {
         return $this->database;
+    }
+
+    /**
+     *
+     * @author zxf
+     * @date   2021年11月3日
+     * @return number
+     */
+    public function getDbTotal()
+    {
+        return $this->getSearch()->getDbTotal();
     }
 
     /**

@@ -30,7 +30,6 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Seffeng\LaravelXunsearch\Xunsearch closeBuffer()
  * @method static \Seffeng\LaravelXunsearch\Xunsearch getHotQuery(int $limit = 6, string $type = 'total')
  * @method static \Seffeng\LaravelXunsearch\Xunsearch getRelatedQuery(string $query = null, int $limit = 6)
- * @method static \Seffeng\LaravelXunsearch\Xunsearch setMultiSort(array $fields, bool $reverse = false, bool $relevance = false)
  * @method static \Seffeng\LaravelXunsearch\Xunsearch setFacets($field, bool $exact = false)
  * @method static \Seffeng\LaravelXunsearch\Xunsearch setSort($field, bool $asc = false, bool $relevance = false)
  * @method static \Seffeng\LaravelXunsearch\Xunsearch setRange(string $field, int $from = null, int $to = null)
@@ -41,6 +40,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Seffeng\LaravelXunsearch\Xunsearch terms(string $query = null, bool $convert = true)
  * @method static \Seffeng\LaravelXunsearch\Xunsearch setWeight(string $field, string $term, int $weight = 1)
  * @method static \Seffeng\LaravelXunsearch\Xunsearch addWeight(string $field, string $term, int $weight = 1)
+ * @method static \Seffeng\LaravelXunsearch\Xunsearch getDbTotal()
  *
  * @see \Seffeng\LaravelXunsearch\Xunsearch
  */
