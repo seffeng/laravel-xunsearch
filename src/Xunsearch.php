@@ -24,7 +24,19 @@ class Xunsearch
      *
      * @var \XS
      */
+    private $service;
+
+    /**
+     *
+     * @var \XSSearch
+     */
     private $search;
+
+    /**
+     *
+     * @var \XSIndex
+     */
+    private $index;
 
     /**
      *
@@ -60,17 +72,13 @@ class Xunsearch
      *
      * @var string
      */
-    private $rangeField;
+    private $range;
+
     /**
      *
-     * @var integer
+     * @var array
      */
-    private $rangeFrom;
-    /**
-     *
-     * @var integer
-     */
-    private $rangeTo;
+    private $weight;
 
     /**
      *
@@ -96,13 +104,18 @@ class Xunsearch
     public function search(string $query, bool $saveHighlight = true)
     {
         $startTime = microtime(true);
-        $search = $this->getSearch()->setQuery($query);
-        if ($this->getRangeField() && ($this->getRangeFrom() || $this->getRangeTo())) {
-            $search->addRange($this->getRangeField(), $this->getRangeFrom(), $this->getRangeTo());
+        $search = $this->getSearch();
+        $search->setFuzzy($this->getFuzzy())->setQuery($query);
+
+        if ($this->getRange()) foreach ($this->getRange() as $range) {
+            $search->addRange($range['0'], $range['1'], $range['2']);
         }
-        $search->setLimit($this->getLimit(), $this->getOffset())->setFuzzy($this->getFuzzy());
-        $items = $search->search(null, $saveHighlight);
+        if ($this->getWeight()) foreach ($this->getWeight() as $weight) {
+            $search->addWeight($weight['0'], $weight['1'], $weight['2']);
+        }
+
         $totalCount = $search->count();
+        $items = $search->setLimit($this->getLimit(), $this->getOffset())->search(null, $saveHighlight);
         $searchCost = microtime(true) - $startTime;
 
         return [
@@ -249,10 +262,25 @@ class Xunsearch
      */
     public function setRange(string $field, int $from = null, int $to = null)
     {
-        $this->rangeField = $field;
-        $this->rangeFrom = $from;
-        $this->rangeTo = $to;
+        if ($field) {
+            $this->range = [
+                [$field, $from, $to]
+            ];
+        } else {
+            $this->range = null;
+        }
         return $this;
+    }
+
+    /**
+     *
+     * @author zxf
+     * @date   2021年11月3日
+     * @return string
+     */
+    public function getRange()
+    {
+        return $this->range;
     }
 
     /**
@@ -266,41 +294,71 @@ class Xunsearch
      */
     public function addRange(string $field, int $from = null, int $to = null)
     {
-        $this->setRange($field, $from, $to);
+        if ($field) {
+            if (is_null($this->range)) {
+                $this->range = [
+                    [$field, $from, $to]
+                ];
+            } else {
+                array_push($this->range, [$field, $from, $to]);
+            }
+        }
         return $this;
     }
 
     /**
      *
      * @author zxf
-     * @date   2020年12月17日
-     * @return string
+     * @date   2021年11月3日
+     * @param string $field
+     * @param string $term
+     * @param int $weight
+     * @return static
      */
-    public function getRangeField()
+    public function addWeight(string $field, string $term, int $weight = 1)
     {
-        return $this->rangeField;
+        if ($field && $term && $weight > 0) {
+            if (is_null($this->weight)) {
+                $this->weight = [
+                    [$field, $term, $weight]
+                ];
+            } else {
+                array_push($this->weight, [$field, $term, $weight]);
+            }
+        }
+        return $this;
     }
 
     /**
      *
      * @author zxf
-     * @date   2020年12月17日
-     * @return number
+     * @date   2021年11月3日
+     * @param string $field
+     * @param string $term
+     * @param int $weight
+     * @return static
      */
-    public function getRangeFrom()
+    public function setWeight(string $field, string $term, int $weight = 1)
     {
-        return $this->rangeFrom;
+        if ($field && $term && $weight > 0) {
+            $this->weight = [
+                [$field, $term, $weight]
+            ];
+        } else {
+            $this->weight = null;
+        }
+        return $this;
     }
 
     /**
      *
      * @author zxf
-     * @date   2020年12月17日
-     * @return number
+     * @date   2021年11月3日
+     * @return array
      */
-    public function getRangeTo()
+    public function getWeight()
     {
-        return $this->rangeTo;
+        return $this->weight;
     }
 
     /**
@@ -444,7 +502,7 @@ class Xunsearch
     {
         try {
             if (isset($this->config['databases'][$this->database])) {
-                $this->search = new \XS($this->coverToIni($this->config['databases'][$this->database]));
+                $this->service = new \XS($this->coverToIni($this->config['databases'][$this->database]));
                 return $this;
             }
             throw new XunsearchException('配置错误！');
@@ -463,7 +521,10 @@ class Xunsearch
      */
     private function getSearch()
     {
-        return $this->search->getSearch();
+        if (is_null($this->search)) {
+            $this->search = $this->service->getSearch();
+        }
+        return $this->search;
     }
 
     /**
@@ -474,7 +535,10 @@ class Xunsearch
      */
     private function getIndex()
     {
-        return $this->search->getIndex();
+        if (is_null($this->index)) {
+            $this->index = $this->service->getIndex();
+        }
+        return $this->index;
     }
 
     /**

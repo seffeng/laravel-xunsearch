@@ -39,6 +39,8 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Seffeng\LaravelXunsearch\Xunsearch getLastCount()
  * @method static \Seffeng\LaravelXunsearch\Xunsearch count(string $query = null)
  * @method static \Seffeng\LaravelXunsearch\Xunsearch terms(string $query = null, bool $convert = true)
+ * @method static \Seffeng\LaravelXunsearch\Xunsearch setWeight(string $field, string $term, int $weight = 1)
+ * @method static \Seffeng\LaravelXunsearch\Xunsearch addWeight(string $field, string $term, int $weight = 1)
  *
  * @see \Seffeng\LaravelXunsearch\Xunsearch
  */
