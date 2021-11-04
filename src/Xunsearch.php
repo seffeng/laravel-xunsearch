@@ -24,19 +24,7 @@ class Xunsearch
      *
      * @var \XS
      */
-    private $service;
-
-    /**
-     *
-     * @var \XSSearch
-     */
     private $search;
-
-    /**
-     *
-     * @var \XSIndex
-     */
-    private $index;
 
     /**
      *
@@ -536,7 +524,7 @@ class Xunsearch
     {
         try {
             if (isset($this->config['databases'][$this->database])) {
-                $this->service = new \XS($this->coverToIni($this->config['databases'][$this->database]));
+                $this->search = new \XS($this->coverToIni($this->config['databases'][$this->database]));
                 return $this;
             }
             throw new XunsearchException('配置错误！');
@@ -555,10 +543,7 @@ class Xunsearch
      */
     private function getSearch()
     {
-        if (is_null($this->search)) {
-            $this->search = $this->service->getSearch();
-        }
-        return $this->search;
+        return $this->search->getSearch();
     }
 
     /**
@@ -569,10 +554,7 @@ class Xunsearch
      */
     private function getIndex()
     {
-        if (is_null($this->index)) {
-            $this->index = $this->service->getIndex();
-        }
-        return $this->index;
+        return $this->search->getIndex();
     }
 
     /**
