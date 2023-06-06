@@ -58,7 +58,7 @@ class Xunsearch
 
     /**
      *
-     * @var string
+     * @var array
      */
     private $range;
 
@@ -287,7 +287,7 @@ class Xunsearch
      *
      * @author zxf
      * @date   2021年11月3日
-     * @return string
+     * @return array
      */
     public function getRange()
     {
@@ -323,7 +323,7 @@ class Xunsearch
      * @date   2021年11月3日
      * @param string $field
      * @param string $term
-     * @param int $weight
+     * @param integer $weight
      * @return static
      */
     public function addWeight(string $field, string $term, int $weight = 1)
@@ -346,7 +346,7 @@ class Xunsearch
      * @date   2021年11月3日
      * @param string $field
      * @param string $term
-     * @param int $weight
+     * @param integer $weight
      * @return static
      */
     public function setWeight(string $field, string $term, int $weight = 1)
@@ -387,8 +387,8 @@ class Xunsearch
      *
      * @author zxf
      * @date   2020年9月3日
-     * @param int $perPage
-     * @param int $page
+     * @param integer $perPage
+     * @param integer $page
      * @return static
      */
     public function setLimit(int $limit = 10)
@@ -401,7 +401,7 @@ class Xunsearch
      *
      * @author zxf
      * @date   2020年9月3日
-     * @return number
+     * @return integer
      */
     public function getLimit()
     {
@@ -412,7 +412,7 @@ class Xunsearch
      *
      * @author zxf
      * @date   2020年9月3日
-     * @param int $offset
+     * @param integer $offset
      * @return static
      */
     public function setOffset(int $offset = 0)
@@ -425,7 +425,7 @@ class Xunsearch
      *
      * @author zxf
      * @date   2020年9月3日
-     * @return number
+     * @return integer
      */
     public function getOffset()
     {
@@ -436,7 +436,7 @@ class Xunsearch
      *
      * @author zxf
      * @date   2020年9月3日
-     * @param int $page
+     * @param integer $page
      * @return static
      */
     public function setPage(int $page = 1)
@@ -449,7 +449,7 @@ class Xunsearch
      *
      * @author zxf
      * @date   2020年9月4日
-     * @return number
+     * @return integer
      */
     public function getPage()
     {
@@ -486,7 +486,7 @@ class Xunsearch
      *
      * @author zxf
      * @date   2021年11月3日
-     * @return number
+     * @return integer
      */
     public function getDbTotal()
     {
