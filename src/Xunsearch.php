@@ -58,7 +58,7 @@ class Xunsearch
 
     /**
      *
-     * @var array
+     * @var string|array
      */
     private $range;
 
@@ -287,7 +287,7 @@ class Xunsearch
      *
      * @author zxf
      * @date   2021年11月3日
-     * @return array
+     * @return string|array
      */
     public function getRange()
     {
