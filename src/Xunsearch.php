@@ -271,7 +271,7 @@ class Xunsearch
      * @param integer $to
      * @return static
      */
-    public function setRange(string $field, int $from = null, int $to = null)
+    public function setRange(string $field, ?int $from = null, ?int $to = null)
     {
         if ($field) {
             $this->range = [
@@ -303,7 +303,7 @@ class Xunsearch
      * @param integer $to
      * @return static
      */
-    public function addRange(string $field, int $from = null, int $to = null)
+    public function addRange(string $field, ?int $from = null, ?int $to = null)
     {
         if ($field) {
             if (is_null($this->range)) {
@@ -517,7 +517,6 @@ class Xunsearch
      *
      * @author zxf
      * @date   2020年9月3日
-     * @param string $config
      * @return static
      */
     private function setSearch()
@@ -531,7 +530,7 @@ class Xunsearch
         } catch (XunsearchException $e) {
             throw $e;
         } catch (\Exception $e) {
-            throw new XunsearchException('搜索服务设置失败！');
+            throw new XunsearchException('搜索服务设置失败：' . $e->getMessage(), (int) $e->getCode(), $e);
         }
     }
 
